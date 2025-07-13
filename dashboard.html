@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: white;
+      padding: 40px;
+    }
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 200px;
+      background: #111;
+      padding-top: 40px;
+    }
+    .sidebar a {
+      display: block;
+      color: white;
+      padding: 15px;
+      text-decoration: none;
+    }
+    .sidebar a:hover {
+      background: #333;
+    }
+    .content {
+      margin-left: 220px;
+    }
+    .card {
+      background: #1e3c72;
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 10px #000;
+    }
+  </style>
+</head>
+<body>
+ <div class="sidebar">
+  <a href="dashboard.html">Dashboard</a>
+  <a href="typing.html">Typing Task</a>
+  <a href="my-profile.html">My Profile</a>
+  <a href="bank-bind.html">Bank Bind</a>
+  <a href="withdraw.html">Withdraw</a>
+</div>
+
+  <div class="content">
+    <h1>Welcome, <span id="username"></span></h1>
+    <div class="card">
+      <h3>Tier Completion Report</h3>
+      <p>Paragraphs Completed: <span id="paragraphs">0</span> / 25</p>
+      <p>Average Accuracy: <span id="accuracy">0%</span></p>
+      <p>Earnings: ₹<span id="earnings">0</span></p>
+    </div>
+    <button onclick="window.location.href='typing.html'">Start Typing Task</button>
+  </div>
+
+  <script>
+    document.getElementById("username").innerText = localStorage.getItem("userName") || "User";
+    document.getElementById("paragraphs").innerText = localStorage.getItem("completed") || 0;
+    document.getElementById("accuracy").innerText = localStorage.getItem("avgAccuracy") || "0%";
+
+    let completed = parseInt(localStorage.getItem("completed") || 0);
+    let earnings = completed >= 25 ? 100 : 0;
+    document.getElementById("earnings").innerText = earnings;
+  </script>
+</body>
+</html>

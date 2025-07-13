@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Typing Task</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #2c3e50;
+      color: white;
+      padding: 40px;
+      text-align: center;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 20px;
+      border: 3px solid white;
+      border-radius: 10px;
+    }
+    textarea {
+      width: 90%;
+      height: 150px;
+      font-size: 16px;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+    }
+    .timer {
+      font-size: 24px;
+      margin: 10px 0;
+    }
+    .reset {
+      margin-top: 20px;
+    }
+    button {
+      padding: 12px 25px;
+      margin-top: 10px;
+      border: none;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .paragraph-box {
+      width: 80%;
+      margin: 10px auto;
+      background: #34495e;
+      padding: 15px;
+      border-radius: 10px;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Typing Task</h2>
+  <p class="timer">Time Left: <span id="timer">45</span> seconds</p>
+
+  <img src="https://dummyimage.com/600x200/ffffff/000000&text=Typing+Paragraph" alt="Paragraph Image" />
+
+  <div class="paragraph-box" id="paraText">
+    “The theory of relativity isn’t *just* physics, it’s poetry.”<br>
+    At 3:00 AM, he whispered: “Efficiency = (Work/Time) × 100%.”<br>
+    Don’t forget to bring your @docs, cables, and #files!
+  </div>
+
+  <textarea id="typedText" placeholder="Type the above paragraph..." required></textarea><br>
+
+  <button onclick="submitText()">Submit</button>
+
+  <div class="reset">
+    <p>Resets Left: <span id="resetsLeft">0</span></p>
+    <button onclick="resetTask()">Reset Task</button>
+  </div>
+
+  <script>
+    const originalText = `“The theory of relativity isn’t *just* physics, it’s poetry.”
+At 3:00 AM, he whispered: “Efficiency = (Work/Time) × 100%.”
+Don’t forget to bring your @docs, cables, and #files!`;
+
+    let timer = 45;
+    let interval = setInterval(updateTimer, 1000);
+
+    function updateTimer() {
+      document.getElementById("timer").innerText = timer;
+      if (timer <= 0) {
+        clearInterval(interval);
+        alert("Time's up!");
+        submitText();
+      }
+      timer--;
+    }
+
+    function submitText() {
+      clearInterval(interval);
+      const typed = document.getElementById("typedText").value.trim();
+      const accuracy = calculateAccuracy(originalText, typed);
+
+      alert("Your Accuracy: " + accuracy.toFixed(2) + "%");
+
+      let completed = parseInt(localStorage.getItem("completed") || 0);
+      let totalAcc = parseFloat(localStorage.getItem("totalAcc") || 0);
+      completed++;
+      totalAcc += accuracy;
+
+      localStorage.setItem("completed", completed);
+      localStorage.setItem("totalAcc", totalAcc);
+      localStorage.setItem("avgAccuracy", (totalAcc / completed).toFixed(2) + "%");
+
+      if (completed >= 25 && (totalAcc / completed) >= 95) {
+        alert("Tier Completed! ₹100 will be added to your account.");
+      }
+
+      window.location.href = "dashboard.html";
+    }
+
+    function calculateAccuracy(original, typed) {
+      let correct = 0;
+      let len = Math.min(original.length, typed.length);
+      for (let i = 0; i < len; i++) {
+        if (original[i] === typed[i]) correct++;
+      }
+      return (correct / original.length) * 100;
+    }
+
+    function resetTask() {
+      let resets = parseInt(localStorage.getItem("resetsLeft") || 0);
+      if (resets > 0) {
+        resets--;
+        localStorage.setItem("resetsLeft", resets);
+        document.getElementById("resetsLeft").innerText = resets; // ✅ update display
+        location.reload(); // restart task
+      } else {
+        alert("No resets left!");
+        window.location.href = "reset-limit.html";
+      }
+    }
+
+    // ✅ Display initial resets on load
+    document.getElementById("resetsLeft").innerText = localStorage.getItem("resetsLeft") || 0;
+  </script>
+</body>
+</html>

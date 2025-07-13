@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: white;
+      padding: 40px;
+      text-align: center;
+    }
+    .register-box {
+      background: #2c3e50;
+      padding: 30px;
+      border-radius: 15px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 0 10px black;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    input, select, button {
+      width: 100%;
+      margin: 12px 0;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+    }
+    button {
+      background-color: #fff;
+      color: #2c3e50;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="register-box">
+    <h2>Register</h2>
+    <form id="registerForm">
+      <input type="text" id="fullName" placeholder="Full Name" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="tel" id="phone" placeholder="Phone Number" required />
+      <input type="password" id="password" placeholder="Password" required />
+
+      <select id="plan" required>
+        <option value="">-- Select Plan --</option>
+        <option value="129">₹129 - 3 Resets</option>
+        <option value="229">₹229 - 6 Resets</option>
+        <option value="329">₹329 - 9 Resets</option>
+      </select>
+
+      <button type="submit">Register</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("registerForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const fullName = document.getElementById("fullName").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const password = document.getElementById("password").value;
+      const plan = document.getElementById("plan").value;
+
+      if (!fullName || !email || !phone || !password || !plan) {
+        alert("Please fill all the fields.");
+        return;
+      }
+
+      // Save user data
+      localStorage.setItem("fullName", fullName);
+      localStorage.setItem("email", email);
+      localStorage.setItem("phone", phone);
+      localStorage.setItem("password", password); // Optional for login
+      localStorage.setItem("plan", plan);
+
+      // Set resets based on plan
+      if (plan === "129") {
+        localStorage.setItem("resetsLeft", 3);
+      } else if (plan === "229") {
+        localStorage.setItem("resetsLeft", 6);
+      } else if (plan === "329") {
+        localStorage.setItem("resetsLeft", 9);
+      }
+
+      alert("Registration successful! Please proceed to payment.");
+      window.location.href = "payment.html"; // ✅ redirect to payment page
+    });
+  </script>
+
+</body>
+</html>

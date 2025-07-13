@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Profile</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #283e51, #485563);
+      color: white;
+      margin: 0;
+    }
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 200px;
+      background: #111;
+      padding-top: 40px;
+    }
+    .sidebar a {
+      display: block;
+      color: white;
+      padding: 15px;
+      text-decoration: none;
+    }
+    .sidebar a:hover {
+      background: #333;
+    }
+    .content {
+      margin-left: 220px;
+      padding: 40px;
+    }
+    .profile-box {
+      background: #2c3e50;
+      padding: 30px;
+      border-radius: 15px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 10px black;
+    }
+    h2 {
+      text-align: center;
+    }
+    .profile-info p {
+      font-size: 18px;
+      margin: 12px 0;
+    }
+    .features {
+      margin-top: 20px;
+      background-color: #34495e;
+      padding: 15px;
+      border-radius: 10px;
+    }
+    .features p {
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="typing.html">Typing Task</a>
+    <a href="my-profile.html">My Profile</a>
+    <a href="bank-bind.html">Bank Bind</a>
+    <a href="withdraw.html">Withdraw</a>
+  </div>
+
+  <div class="content">
+    <div class="profile-box">
+      <h2>My Profile</h2>
+      <div class="profile-info">
+        <p><strong>Full Name:</strong> <span id="fullName">-</span></p>
+        <p><strong>Email:</strong> <span id="email">-</span></p>
+        <p><strong>Phone:</strong> <span id="phone">-</span></p>
+        <p><strong>User ID:</strong> <span id="userId">-</span></p>
+        <p><strong>Selected Plan:</strong> <span id="selectedPlan">-</span></p>
+      </div>
+
+      <div class="features" id="planFeatures">
+        <!-- Plan features will appear here -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Load user details from localStorage
+    document.getElementById("fullName").innerText = localStorage.getItem("fullName") || "N/A";
+    document.getElementById("email").innerText = localStorage.getItem("email") || "N/A";
+    document.getElementById("phone").innerText = localStorage.getItem("phone") || "N/A";
+
+    // Generate & display User ID
+    let uid = localStorage.getItem("userId");
+    if (!uid) {
+      uid = "USER" + Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+      localStorage.setItem("userId", uid);
+    }
+    document.getElementById("userId").innerText = uid;
+
+    // Show selected plan
+    const selectedPlan = localStorage.getItem("plan") || "Not Selected";
+    document.getElementById("selectedPlan").innerText = "₹" + selectedPlan;
+
+    // Show features based on plan
+    const featuresDiv = document.getElementById("planFeatures");
+    let features = "";
+
+    if (selectedPlan === "129") {
+      features = `
+        <h3>Plan Features:</h3>
+        <p>✔ ₹129 Plan</p>
+        <p>✔ 3 Reset Attempts</p>
+        <p>✔ ₹100 per tier (on 95% accuracy)</p>
+        <p>✔ Complete 25 tasks per tier</p>
+      `;
+    } else if (selectedPlan === "229") {
+      features = `
+        <h3>Plan Features:</h3>
+        <p>✔ ₹229 Plan</p>
+        <p>✔ 6 Reset Attempts</p>
+        <p>✔ ₹100 per tier (on 95% accuracy)</p>
+        <p>✔ Complete 25 tasks per tier</p>
+      `;
+    } else if (selectedPlan === "329") {
+      features = `
+        <h3>Plan Features:</h3>
+        <p>✔ ₹329 Plan</p>
+        <p>✔ 9 Reset Attempts</p>
+        <p>✔ ₹100 per tier (on 95% accuracy)</p>
+        <p>✔ Complete 25 tasks per tier</p>
+      `;
+    } else {
+      features = "<p>No plan selected yet.</p>";
+    }
+
+    featuresDiv.innerHTML = features;
+  </script>
+
+</body>
+</html>

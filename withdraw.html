@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Withdraw</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #485563, #29323c);
+      color: white;
+      margin: 0;
+    }
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 200px;
+      background: #111;
+      padding-top: 40px;
+    }
+    .sidebar a {
+      display: block;
+      color: white;
+      padding: 15px;
+      text-decoration: none;
+    }
+    .sidebar a:hover {
+      background: #333;
+    }
+    .content {
+      margin-left: 220px;
+      padding: 40px;
+    }
+    .withdraw-box {
+      background: #2c3e50;
+      padding: 30px;
+      border-radius: 15px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 10px black;
+    }
+    input, button {
+      width: 100%;
+      margin: 12px 0;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+    }
+    button {
+      background-color: white;
+      color: #2c3e50;
+      cursor: pointer;
+    }
+    .message {
+      margin-top: 10px;
+      font-size: 15px;
+      color: #ff6961;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="typing.html">Typing Task</a>
+    <a href="my-profile.html">My Profile</a>
+    <a href="bank-bind.html">Bank Bind</a>
+    <a href="withdraw.html">Withdraw</a>
+  </div>
+
+  <div class="content">
+    <div class="withdraw-box">
+      <h2>Withdraw Earnings</h2>
+      <p>Wallet Balance: ₹<span id="wallet">0</span></p>
+      <input type="number" id="withdrawAmount" placeholder="Enter amount to withdraw (₹)" oninput="checkAmount()" />
+      <div id="msg" class="message"></div>
+      <button id="withdrawBtn" onclick="processWithdraw()" disabled>Withdraw</button>
+    </div>
+  </div>
+
+  <script>
+    let wallet = parseFloat(localStorage.getItem("wallet") || "0");
+    document.getElementById("wallet").innerText = wallet.toFixed(2);
+
+    function checkAmount() {
+      const amount = parseFloat(document.getElementById("withdrawAmount").value);
+      const msg = document.getElementById("msg");
+      const btn = document.getElementById("withdrawBtn");
+
+      if (isNaN(amount) || amount < 150) {
+        msg.textContent = "Minimum withdrawal amount is ₹150.";
+        btn.disabled = true;
+      } else if (amount > wallet) {
+        msg.textContent = "Insufficient wallet balance.";
+        btn.disabled = true;
+      } else {
+        msg.textContent = "";
+        btn.disabled = false;
+      }
+    }
+
+    function processWithdraw() {
+      const amount = parseFloat(document.getElementById("withdrawAmount").value);
+      if (amount > wallet) {
+        alert("Not enough balance!");
+        return;
+      }
+
+      wallet -= amount;
+      localStorage.setItem("wallet", wallet.toFixed(2));
+      alert(`Withdraw request of ₹${amount} submitted!`);
+
+      // Update UI
+      document.getElementById("wallet").innerText = wallet.toFixed(2);
+      document.getElementById("withdrawAmount").value = "";
+      document.getElementById("withdrawBtn").disabled = true;
+
+      // Redirect after request
+      window.location.href = "dashboard.html";
+    }
+  </script>
+
+</body>
+</html>
